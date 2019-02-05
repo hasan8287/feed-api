@@ -1,14 +1,15 @@
 require('dotenv').config();
-const express = require('express');
 
-const feedRoute = require('./../src/feed/routes');
-
-describe('Test INtegration', () => {
-  before(async () => {
-    await require('./../src/index')
+describe('Test', () => {
+  describe('Unit Test', () => {
+    require('./unit/feed.spec');
   });
 
-  describe('Test Integration', () => {
+  describe('Integration Test', () => {
+    before(async () => {
+      await require('./../src/index');
+    });
+
     require('./integration/feed.spec');
   });
 });

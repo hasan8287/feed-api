@@ -16,26 +16,24 @@ controller.generatePage = (data) => {
 controller.getFeed = async (req, res) => {
   try {
     const { params, query } = req;
-    
+
     const url = (query.page) ? `/me/feed?__paging_token=${params.page}` : '/me/feed';
 
     graph.setAccessToken(process.env.FB_TOKEN);
-    const data = await new Promise((resolve, reject) => {
-      return graph.get(url, (err, resFb) => {
-        if (err) {
-          return reject(err.message);
-        }
-  
-        const { data: docs, paging } = resFb;
-        const { next, previous } = paging;
+    const data = await new Promise((resolve, reject) => graph.get(url, (err, resFb) => {
+      if (err) {
+        return reject(err.message);
+      }
 
-        return resolve({
-          docs,
-          next: controller.generatePage(next),
-          previous: controller.generatePage(previous),
-        })
+      const { data: docs, paging } = resFb;
+      const { next, previous } = paging;
+
+      return resolve({
+        docs,
+        next: controller.generatePage(next),
+        previous: controller.generatePage(previous),
       });
-    });
+    }));
 
     return res.send({
       message: 'SUCCESS',

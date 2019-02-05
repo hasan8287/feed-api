@@ -1,7 +1,6 @@
 
 const chai = require('chai');
 const http = require('chai-http');
-const sinon = require('sinon');
 
 chai.use(http);
 
@@ -11,7 +10,7 @@ describe('module feed', () => {
   it('should success get data feed', async () => {
     const data = await chai.request(baseUrl)
       .get('/feed')
-      .then(res => res.body)
+      .then(res => res.body);
 
     chai.expect(data).to.be.an('object');
     chai.expect(data.code).to.be.equal(200);
